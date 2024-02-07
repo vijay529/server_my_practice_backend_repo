@@ -13,7 +13,7 @@ const MONGODB = process.env.MONGODB;
 // Connect to MongoDB
 const connect = async()=>{
   try{
-    await mongoose.connect(MONGODB);
+    await mongoose.connect(process.env.MONGODB);
     console.log('connected to database');
   }catch(err){
     console.log('db connection err');
