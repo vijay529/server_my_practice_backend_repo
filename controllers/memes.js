@@ -33,7 +33,7 @@ export const getSingleMeme = async(req, res, next)=>{
     try {
         const meme = await Meme.findById(req.params.id);
         const video = meme.vidUrl;
-        const obj = {title:meme.title, time:meme.time, views:meme.views, video:video}
+        const obj = {title:meme.title, time:meme.time, views:meme.views, video:video, desc:meme.desc, tags:meme.tags}
         res.status(200).json(obj);
     } catch (error) {
         console.log('cannot find video');
@@ -57,9 +57,9 @@ export const downloadMeme = async(req, res, next)=>{
 }
 
 export const searchMeme = async(req, res, next)=>{
-    const title = req.query.title;
+    const {title, page, pageSize} = req.query;
     try {
-        const memes = await Meme.find({ title: { $regex: title, $options: 'i' } });
+        const memes = await Meme.find({ title: { $regex: title, $options: 'i' } }).skip((page-1)*12).limit(pageSize).exec();
         res.status(200).json(memes);
     } catch (error) {
         console.log('server error while searching ', error)

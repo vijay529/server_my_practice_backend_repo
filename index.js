@@ -26,10 +26,12 @@ mongoose.connection.on('disconnected',()=>{
 
 // Middleware
 app.use(express.json());
-app.use(cors({}));
+app.use(cors({
+  origin:"*"
+}));
 
 // routes
-app.use('/api', router);
+app.use('/api', cors(), router);
 
 // server
 app.listen(PORT, () => {
