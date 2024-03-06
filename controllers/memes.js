@@ -21,7 +21,7 @@ import fetch from 'node-fetch';
 export const getAllMemes = async(req,res,next)=>{
     const {page, pageSize} = req.query;
     try {
-        const videos = await Meme.find().skip((page-1)*pageSize).limit(pageSize).exec();
+        const videos = await Meme.find().sort({time:'desc'}).skip((page-1)*pageSize).limit(pageSize).exec();
         res.status(200).json(videos)
     } catch (error) {
         console.log('cannot find videos');
