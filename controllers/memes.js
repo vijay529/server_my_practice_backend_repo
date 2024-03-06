@@ -59,7 +59,10 @@ export const downloadMeme = async(req, res, next)=>{
 export const searchMeme = async(req, res, next)=>{
     const {title, page, pageSize} = req.query;
     try {
-        const memes = await Meme.find({ title: { $regex: title, $options: 'i' } }).skip((page-1)*12).limit(pageSize).exec();
+        const memes = await Meme.find({ $or: [
+            { title: { $regex: title, $options: 'i' } },
+            { tags: { $in: [title] } }
+        ] }).sort({time:"desc"}).skip((page-1)*12).limit(pageSize).exec();
         res.status(200).json(memes);
     } catch (error) {
         console.log('server error while searching ', error)
